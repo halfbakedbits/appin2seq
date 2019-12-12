@@ -1,30 +1,30 @@
 ﻿using System;
 using System.IO;
-using System.Text;
-using TinyCsvParser;
-using TinyCsvParser.Tokenizer.RFC4180;
+using GenericParsing;
 
 namespace appinSeq.Conversion.Framework
 {
   internal class TracesAppInsightLogConverter : IAppInsightLogConverter
   {
+    private readonly IMapper<GenericParser, TracesEntry> _mapper;
+
+    public TracesAppInsightLogConverter(IMapper<GenericParser, TracesEntry> mapper)
+    {
+      _mapper = mapper;
+    }
+
     public void Convert(FileInfo file, string destinationFile)
     {
-      var options = new Options('"', '\\', ',');
-      var tokenizer = new RFC4180Tokenizer(options);
-      var csvParserOptions = new CsvParserOptions(true, tokenizer);
-      var csvMapper = new CsvAppInsightsLogAnalyticsTracesMapper();
-      var csvParser = new CsvParser<TracesEntry>(csvParserOptions, csvMapper);
-
-      foreach (var entry in csvParser.ReadFromFile(file.FullName, Encoding.UTF8))
+      using (var parser = new GenericParser(file.FullName)
       {
-        if (entry.IsValid)
+        FirstRowHasHeader = true, SkipEmptyRows = true, TrimResults = true
+      })
+      {
+        while (parser.Read())
         {
-          Console.WriteLine(entry.RowIndex + " : " + entry.Result?.Timestamp);
-        }
-        else
-        {
-          Console.WriteLine(entry.RowIndex + " : " + entry.Error);
+          var tracesEntity = _mapper.Map(parser);
+
+          Console.WriteLine($"{tracesEntity.Timestamp}:{tracesEntity.Message}");
         }
       }
     }

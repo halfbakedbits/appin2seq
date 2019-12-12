@@ -24,6 +24,7 @@ namespace appinSeq
       {
         Console.Write("Source file:");
         var filePath = Console.ReadLine();
+        
         if (File.Exists(filePath))
         {
           sourceFile = filePath;

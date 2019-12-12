@@ -1,4 +1,5 @@
-﻿using TinyCsvParser.Mapping;
+﻿using appinSeq.Conversion.Framework;
+using TinyCsvParser.Mapping;
 
 namespace appinSeq.Conversion
 {
@@ -7,7 +8,7 @@ namespace appinSeq.Conversion
   {
     public CsvAppInsightsLogAnalyticsTracesMapper()
     {
-      MapProperty(0, e => e.Timestamp);
+      MapProperty(0, e => e.Timestamp, new NullableDateTimeOffsetConverter());
       MapProperty(1, e => e.Message);
       MapProperty(2, e => e.SeverityLevel);
       MapProperty(3, e => e.ItemType);

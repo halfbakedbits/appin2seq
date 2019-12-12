@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "appinSeq": {
+      "commandName": "Project",
+      "commandLineArgs": "convert -f=Traces"
+    }
+  }
+}

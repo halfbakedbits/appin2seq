@@ -1,23 +1,21 @@
-﻿using System;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
 using TinyCsvParser;
 
-namespace appinSeq
+namespace appinSeq.Conversion
 {
   internal class TracesAppInsightLogConverter : IAppInsightLogConverter
   {
-    public void ConvertTo(string destinationFile)
+    public void Convert(FileInfo file, string destinationFile)
     {
-      CsvParserOptions csvParserOptions = new CsvParserOptions(true, ',', 2, false);
-      CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] {Environment.NewLine});
+      var csvParserOptions = new CsvParserOptions(true, ',', 2, false);
       var csvMapper = new CsvAppInsightsLogAnalyticsTracesMapper();
 
       var csvParser = new CsvParser<TracesEntry>(csvParserOptions, csvMapper);
 
-      var result = csvParser
-        .ReadFromFile(@"persons.csv", Encoding.ASCII)
-        .ToList();
+      foreach (var entry in csvParser.ReadFromFile(file.FullName, Encoding.UTF8))
+      {
+      }
     }
 
     public bool CanHandle(AppInsightsLogSource format)

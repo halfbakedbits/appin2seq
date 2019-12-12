@@ -3,13 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace appinSeq
+namespace appinSeq.Conversion
 {
-  internal interface IAppInsightLogConverterFactory
-  {
-    IAppInsightLogConverter Create(FileInfo fileInfo, AppInsightsLogSource format);
-  }
-
   internal class AppInsightLogConverterFactory : IAppInsightLogConverterFactory
   {
     private readonly IEnumerable<IAppInsightLogConverter> _converters;
@@ -30,9 +25,9 @@ namespace appinSeq
       return converter;
     }
 
-    internal class SimpleConverter : IAppInsightLogConverter
+    private class SimpleConverter : IAppInsightLogConverter
     {
-      public void ConvertTo(string destinationFile)
+      public void Convert(FileInfo file, string destinationFile)
       {
         Console.WriteLine("Format not supported");
       }

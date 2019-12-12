@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using appinSeq.Conversion;
 using Autofac;
 using CLAP;
 
@@ -8,8 +9,8 @@ namespace appinSeq
   internal class ApplicationInsightsSeqImporter
   {
     [Verb(Aliases = "convert", Description = "Convert source file to Seq compact format", IsDefault = true)]
-    public void ConvertToSeqCompact(
-      [Required] [Description("Source file (Application Insights CSV export format)")] [Aliases("s")]
+    public static void ConvertToSeqCompact(
+      [Description("Source file (Application Insights CSV export format)")] [Aliases("s")]
       string sourceFile, [Required] [Aliases("f")] [Description("Format of AppInsights Log file")]
       AppInsightsLogSource format, [Aliases("d")] [Description("Destination file path")]
       string destinationFile = null)
@@ -34,11 +35,11 @@ namespace appinSeq
       var converter = container.Resolve<IAppInsightLogConverterFactory>()
         .Create(new FileInfo(sourceFile), format);
 
-      converter.ConvertTo(destinationFile);
+      converter.Convert(new FileInfo(sourceFile), destinationFile);
     }
 
     [Verb(Aliases = "import", Description = "Import source file to Seq import URL", IsDefault = false)]
-    public void ImportToSeq(
+    public static void ImportToSeq(
       [Required] [Description("Source file (Application Insights CSV export format)")] [Aliases("source")]
       string sourceFile, [Required] [Description("Seq URL")] string seqStore)
     {

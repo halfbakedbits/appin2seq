@@ -1,5 +1,4 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 
 namespace appinSeq
 {
@@ -7,7 +6,13 @@ namespace appinSeq
   {
     public IContainer Init()
     {
-      throw new NotImplementedException();
+      var builder = new ContainerBuilder();
+
+      builder.RegisterAssemblyTypes(typeof(Program).Assembly)
+        .AsImplementedInterfaces()
+        .InstancePerLifetimeScope();
+
+      return builder.Build();
     }
   }
 }

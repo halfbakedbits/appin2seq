@@ -1,6 +1,6 @@
 ﻿using CLAP;
 
-namespace appinSeq
+namespace appin2seq
 {
   class Program
   {

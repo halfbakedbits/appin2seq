@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace appinSeq.Conversion
+namespace appin2seq.Conversion.Framework
 {
   internal interface IAppInsightLogConverter
   {

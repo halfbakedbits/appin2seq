@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace appinSeq
+namespace appin2seq
 {
   internal class Bootstrapper
   {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace appinSeq.Conversion
+namespace appin2seq.Conversion
 {
   internal class TracesEntry
   {

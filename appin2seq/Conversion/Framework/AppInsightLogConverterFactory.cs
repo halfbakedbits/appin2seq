@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace appinSeq.Conversion
+namespace appin2seq.Conversion.Framework
 {
   internal class AppInsightLogConverterFactory : IAppInsightLogConverterFactory
   {

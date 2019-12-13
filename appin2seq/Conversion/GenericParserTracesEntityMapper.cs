@@ -1,6 +1,7 @@
-﻿using GenericParsing;
+﻿using appin2seq.Conversion.Framework;
+using GenericParsing;
 
-namespace appinSeq.Conversion.Framework
+namespace appin2seq.Conversion
 {
   internal class GenericParserTracesEntityMapper : AbstractStringBasedMapper<GenericParser, TracesEntry>
   {

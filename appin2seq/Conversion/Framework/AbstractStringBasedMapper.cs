@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace appinSeq.Conversion.Framework
+namespace appin2seq.Conversion.Framework
 {
   internal abstract class AbstractStringBasedMapper<TSource, TTarget> : IMapper<TSource, TTarget>
   {

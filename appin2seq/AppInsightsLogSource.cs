@@ -1,4 +1,4 @@
-﻿namespace appinSeq
+﻿namespace appin2seq
 {
   internal enum AppInsightsLogSource
   {

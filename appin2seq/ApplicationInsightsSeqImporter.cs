@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
-using appinSeq.Conversion;
+using appin2seq.Conversion.Framework;
 using Autofac;
 using CLAP;
 
-namespace appinSeq
+namespace appin2seq
 {
   internal class ApplicationInsightsSeqImporter
   {

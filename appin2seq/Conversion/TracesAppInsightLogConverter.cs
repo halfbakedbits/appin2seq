@@ -70,7 +70,7 @@ namespace appin2seq.Conversion
               {
                 if (p.Value != null)
                 {
-                  d["@l"] = MapLevel(p.Value as string);
+                  d["@l"] = MapLevel(p.Value.ToString());
                 }
 
                 continue;
@@ -160,9 +160,46 @@ namespace appin2seq.Conversion
       return format == AppInsightsLogSource.Traces;
     }
 
-    private string MapLevel(string aiLevel)
+    private SeqLevel MapLevel(string aiLevel)
     {
-      throw new NotImplementedException();
+      if (int.TryParse(aiLevel, out var i))
+      {
+        switch (i)
+        {
+          case 0:
+            return SeqLevel.Verbose;
+          case 1:
+            return SeqLevel.Debug;
+          case 2:
+            return SeqLevel.Information;
+          case 3:
+            return SeqLevel.Warning;
+          case 4:
+            return SeqLevel.Error;
+          case 5:
+            return SeqLevel.Critical;
+          default:
+            return SeqLevel.Unknown;
+        }
+      }
+
+      if (string.IsNullOrWhiteSpace(aiLevel))
+      {
+        return SeqLevel.Unknown;
+      }
+
+      return Enum.TryParse(typeof(SeqLevel), aiLevel, true, out var e) ? (SeqLevel)e : SeqLevel.Unknown;
     }
+  }
+
+  internal enum SeqLevel
+  {
+    Unknown = -1,
+    Verbose = 0,
+    Debug = 1,
+    Information = 2,
+    Warning = 3,
+    Error = 4,
+    Critical = 5
   }
 }

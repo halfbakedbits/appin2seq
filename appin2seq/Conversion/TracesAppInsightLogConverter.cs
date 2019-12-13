@@ -70,7 +70,7 @@ namespace appin2seq.Conversion
               {
                 if (p.Value != null)
                 {
-                  d["@l"] = MapLevel(p.Value.ToString());
+                  d["@l"] = MapLevel(p.Value.ToString()).ToString();
                 }
 
                 continue;

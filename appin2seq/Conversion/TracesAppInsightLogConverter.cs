@@ -6,7 +6,6 @@ using System.IO;
 using appin2seq.Conversion.Framework;
 using GenericParsing;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace appin2seq.Conversion
 {
@@ -23,7 +22,7 @@ namespace appin2seq.Conversion
         expando[property.Name] = property.GetValue(obj);
       }
 
-      return (ExpandoObject) expando;
+      return (ExpandoObject)expando;
     }
   }
 
@@ -53,27 +52,36 @@ namespace appin2seq.Conversion
           var d = (IDictionary<string, object>)expando;
           foreach (var p in tracesEntity.ToExpandoObject())
           {
-            if (p.Key == nameof(TracesEntry.Timestamp))
+            switch (p.Key)
             {
-              d["@t"] = p.Value;
-              continue;
+              case nameof(TracesEntry.Timestamp):
+                d["@t"] = p.Value;
+
+                continue;
+              case nameof(TracesEntry.Message):
+                d["@m"] = p.Value;
+
+                continue;
+              case nameof(TracesEntry.OperationId):
+                d["@i"] = p.Value ?? Guid.NewGuid();
+
+                continue;
+              case nameof(TracesEntry.SeverityLevel):
+              {
+                if (p.Value != null)
+                {
+                  d["@l"] = MapLevel(p.Value as string);
+                }
+
+                continue;
+              }
+              case nameof(TracesEntry.CustomDimensions):
+                continue;
             }
 
-            if (p.Key == nameof(TracesEntry.Message))
+            if (string.IsNullOrWhiteSpace(p.Value?.ToString()))
             {
-              d["@m"] = p.Value;
               continue;
-            }
-
-            if (p.Key == nameof(TracesEntry.OperationId) && p.Value != null)
-            {
-              d["@i"] = p.Value;
-              continue;
-            }
-
-            if (p.Key == nameof(TracesEntry.SeverityLevel) && p.Value != null)
-            {
-              d["@l"] = MapLevel(p.Value as string);
             }
 
             d[p.Key] = p.Value;
@@ -126,11 +134,7 @@ namespace appin2seq.Conversion
           }
 
           var serialized = JsonConvert.SerializeObject(d, Formatting.None,
-            new JsonSerializerSettings
-            {
-              NullValueHandling = NullValueHandling.Ignore,
-              ContractResolver = new CamelCasePropertyNamesContractResolver()
-            });
+            new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
           items.Add(serialized);
         }
       }
@@ -146,6 +150,7 @@ namespace appin2seq.Conversion
         {
           sw.WriteLine(i);
         }
+
         sw.Flush();
       }
     }

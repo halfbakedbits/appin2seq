@@ -94,7 +94,7 @@ namespace appin2seq.Conversion
             foreach (var kvp in tracesEntity.CustomDimensions)
             {
               string customKey = kvp.Key;
-              if (customKey == "Message Template")
+              if (customKey == "MessageTemplate")
               {
                 customKey = "@mt";
               }

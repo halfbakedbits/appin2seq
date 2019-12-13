@@ -41,7 +41,7 @@ namespace appin2seq.Conversion
 
       using (var parser = new GenericParser(file.FullName)
       {
-        FirstRowHasHeader = true, SkipEmptyRows = true, TrimResults = true
+        FirstRowHasHeader = true, SkipEmptyRows = true, TrimResults = true, MaxBufferSize = 1024 * 32
       })
       {
         while (parser.Read())

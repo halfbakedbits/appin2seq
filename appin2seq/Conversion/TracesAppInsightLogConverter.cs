@@ -91,12 +91,15 @@ namespace appin2seq.Conversion
 
           if (tracesEntity?.CustomDimensions != null)
           {
+            string messageTemplate = null;
+            bool renderingsSupplied = false;
             foreach (var kvp in tracesEntity.CustomDimensions)
             {
               string customKey = kvp.Key;
               if (customKey == "MessageTemplate")
               {
                 customKey = "@mt";
+                messageTemplate = kvp.Value.ToString();
               }
 
               if (customKey == "Exception")
@@ -107,6 +110,7 @@ namespace appin2seq.Conversion
               if (customKey == "Renderings")
               {
                 customKey = "@r";
+                renderingsSupplied = true;
               }
 
               if (!customProperties.Contains(kvp.Key))
@@ -131,8 +135,18 @@ namespace appin2seq.Conversion
 
               d[customKey] = kvp.Value;
             }
+
+            if (!string.IsNullOrWhiteSpace(messageTemplate) && !renderingsSupplied)
+            {
+              var r = BuildRenderings(messageTemplate, tracesEntity.CustomDimensions);
+              if (!string.IsNullOrWhiteSpace(r))
+              {
+                d["@r"] = r;
+              }
+            }
           }
 
+          // TODO: see StackOverflow UntypedtoTypedValueContractResolver example for how to serialize to type-specific members
           var serialized = JsonConvert.SerializeObject(d, Formatting.None,
             new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
           items.Add(serialized);
@@ -153,6 +167,22 @@ namespace appin2seq.Conversion
 
         sw.Flush();
       }
+    }
+
+    private string BuildRenderings(string messageTemplate, IDictionary<string, object> dictionary)
+    {
+      var renderings = new Dictionary<string, object>();
+
+      // TODO: break apart {}-based template (mind {{ escaping)
+      // TODO: locate key in supplied dictionary and assign to renderings dictionary
+
+      if (renderings.Count == 0)
+      {
+        return null;
+      }
+
+      return JsonConvert.SerializeObject(renderings, Formatting.None,
+        new JsonSerializerSettings {NullValueHandling = NullValueHandling.Include});
     }
 
     public bool CanHandle(AppInsightsLogSource format)

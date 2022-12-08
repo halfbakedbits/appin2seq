@@ -10,7 +10,7 @@
     <PackageReference Include="Autofac" Version="4.9.4" />
     <PackageReference Include="CLAP-DotNetCore" Version="4.6.0" />
     <PackageReference Include="GenericParsing" Version="1.2.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
 </Project>
